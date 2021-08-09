@@ -65,6 +65,8 @@ class Test {
             }
         }
         console.log(`Check property ${flag}`);
+        flag = false
+
     }
 }
 
@@ -79,7 +81,7 @@ var dataMnenotechnic = {
     item: [
         {
             word: 'hello world!',
-            //russ: 'привет мир!',
+            russ: 'привет мир!',
             second5: 0,
             second25: 0,
             minute2: 0,
