@@ -66,7 +66,31 @@ class Test {
         }
         console.log(`Check property ${flag}`);
         flag = false
-
+        let mockInfo = {
+            item: [{
+                    word: 'mock',
+                    russ: 'издеваться, глумиться, дразнить',
+                    second5: 0,
+                    second25: 0,
+                    minute2: 0,
+                    minute10: 0,
+                    hour1: 0,
+                    hour5: 0,
+                    day1: 0,
+                    day5: 0,
+                    day25: 0,
+                    month4: 0,
+                    year2: 0
+                }],
+            version: new Date()
+        }
+        console.log(this.objectForTest)
+        if (this.objectForTest.__proto__.hasOwnProperty('upVersion')) {
+            if (this.objectForTest.__proto__.upVersion.call(mockInfo.version) === mockInfo.version) {
+                flag = true
+            }
+        }
+        console.log(`Check method increment version ${flag}`);
     }
 }
 
@@ -74,25 +98,123 @@ class Schedule {
     constructor (data) {
         this.data = data
     }
+    upVersion (date) {
+        console.log(this)
+        return this
+    }
 }
-
+var data2 = {
+    ver: 0,
+    second5: [
+        { 
+            word:'',
+            translate:'',
+            voice:'',
+            image:'',
+            language:''
+        }
+    ],
+    second25: [
+        { 
+            word:'',
+            translate:'',
+            voice:'',
+            image:'',
+            language:''
+        }
+    ],
+    minute2: [
+        { 
+            word:'',
+            translate:'',
+            voice:'',
+            image:'',
+            language:''
+        }
+    ],
+    minute10: [
+        { 
+            word:'',
+            translate:'',
+            voice:'',
+            image:'',
+            language:''
+        }
+    ],
+    hour1: [
+        { 
+            word:'',
+            translate:'',
+            voice:'',
+            image:'',
+            language:''
+        }
+    ],
+    hour5: [
+        { 
+            word:'',
+            translate:'',
+            voice:'',
+            image:'',
+            language:''
+        }
+    ],
+    day1: [
+        { 
+            word:'',
+            translate:'',
+            voice:'',
+            image:'',
+            language:''
+        }
+    ],
+    day5: [
+        { 
+            word:'',
+            translate:'',
+            voice:'',
+            image:'',
+            language:''
+        }
+    ],
+    day25: [
+        { 
+            word:'',
+            translate:'',
+            voice:'',
+            image:'',
+            language:''
+        }
+    ],
+    month4: [
+        { 
+            word:'',
+            translate:'',
+            voice:'',
+            image:'',
+            language:''
+        }
+    ],
+    year2: [
+        { 
+            word:'',
+            translate:'',
+            voice:'',
+            image:'',
+            language:''
+        }
+    ]
+}
 
 var dataMnenotechnic = {
     item: [
         {
             word: 'hello world!',
-            russ: 'привет мир!',
-            second5: 0,
-            second25: 0,
-            minute2: 0,
-            minute10: 0,
-            hour1: 0,
-            hour5: 0,
-            day1: 0,
-            day5: 0,
-            day25: 0,
-            month4: 0,
-            year2: 0
+            translate: 'привет мир!',
+            nextRepetition: 0,
+            language: '',
+            image: '',
+            voice: '',
         }
     ],
     version:0
