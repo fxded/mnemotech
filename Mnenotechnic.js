@@ -54,23 +54,37 @@ class Test {
             'nextRepetition',
             'currentStage'
         ]
-        let mockInfo = {
-            item: [{
+        let mockListOfWords = {
+            items: [{
                     word: 'mock',
-                    russ: 'издеваться, глумиться, дразнить',
-                    second5: 0,
-                    second25: 0,
-                    minute2: 0,
-                    minute10: 0,
-                    hour1: 0,
-                    hour5: 0,
-                    day1: 0,
-                    day5: 0,
-                    day25: 0,
-                    month4: 0,
-                    year2: 0
+                    translate: 'издеваться, глумиться, дразнить',
+                    transcription: '',
+                    language: 'english',
+                    image: '',
+                    voice: '',
+                    nextRepetition: 0,
+                    currentStage: 'start'
+                }, {
+                    word: 'le lapin rouge',
+                    translate: 'красный кролик',
+                    transcription: '',
+                    language: 'france',
+                    image: '',
+                    voice: '',
+                    nextRepetition: 0,
+                    currentStage: 'start'
                 }],
             version: new Date()
+        }
+        let mockWord = {
+            word: 'le lapin rouge',
+            translate: 'красный кролик',
+            transcription: '',
+            language: 'france',
+            image: '',
+            voice: '',
+            nextRepetition: 0,
+            currentStage: 'start'
         }
         // *********  check object ***********
         let flag = false
@@ -111,25 +125,27 @@ class Test {
         console.log(this.objectForTest)
         if (this.objectForTest.__proto__.hasOwnProperty('upVersion')) {
             if (this.objectForTest.__proto__.upVersion.call(this.objectForTest) === Date.now()) {
-                console.log(this.objectForTest.data.version, Date.now())
+                //console.log(this.objectForTest.data.version, Date.now())
                 flag = true
             }
         }
         console.log(`Check method increment version ${flag}`);
         flag = false
-        if (this.objectForTest.__proto__.hasOwnProperty('addListOfWords')) {
-            //if (this.objectForTest.__proto__.addListOfWords.call(mockInfo.version) === mockInfo.version) {
-                flag = true
-            //}
-        }
-        console.log(`Check for addList of words method ${flag}`);
-        flag = false
         if (this.objectForTest.__proto__.hasOwnProperty('addWord')) {
+            //console.log('check metods',this.objectForTest.__proto__.addWord.call(this.objectForTest, mockListOfWords.items[1]))
+            if (this.objectForTest.__proto__.addWord.call(this.objectForTest, mockListOfWords.items[0]).word === mockListOfWords.items[0].word) {
+                //console.log('test',this.objectForTest.__proto__.addWord.call(this.objectForTest, mockWord))
+                flag = true
+            }
+        }
+        console.log(`Check for addWord method ${flag}`);
+        flag = false
+        if (this.objectForTest.__proto__.hasOwnProperty('addListOfWords')) {
             //if (this.objectForTest.__proto__.addWord.call(mockInfo.version) === mockInfo.version) {
                 flag = true
             //}
         }
-        console.log(`Check for addWord method ${flag}`);
+        console.log(`Check for addList of words method ${flag}`);
     }
 }
 
@@ -286,8 +302,8 @@ class Schedule {
                     nextRepetition: wordToAdd.nextRepetition,
                     currentStage: wordToAdd.currentStage
                 })
-                return item
-                //console.log(item.words)
+                //console.log(item.words[item.words.length - 1])
+                return item.words[item.words.length - 1]
             } 
         })
         // если языка нет то добаляем новый язык и добаляем слово
@@ -304,11 +320,12 @@ class Schedule {
                     currentStage: wordToAdd.currentStage
                 }]
             })
+            success.push(this.data.items[this.data.items.length - 1])
         }
-        console.log(success)
-        //console.log(word)
+        //console.log('addword',success)
         // обновляем версию словарика
         this.upVersion()
+        return success[0].words[success[0].words.length - 1]
     }
     addListOfWords () {
 
@@ -371,6 +388,16 @@ let test4 = {
     nextRepetition: 0,
     currentStage: 'start'
 }
+let test5 = {
+    word: 'le lapin',
+    translate: 'кролик',
+    transcription: '',
+    language: 'france',
+    image: '',
+    voice: '',
+    nextRepetition: 0,
+    currentStage: 'start'
+}
 //console.log(listsOfWords)
 let schedule = new Schedule (listsOfWords)
 let test1 = new Test(schedule)
@@ -379,3 +406,4 @@ schedule.addWord(test)
 schedule.addWord(test2)
 schedule.addWord(test3)
 schedule.addWord(test4)
+schedule.addWord(test5)
