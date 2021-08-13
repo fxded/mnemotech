@@ -151,6 +151,7 @@ class Test {
         flag = false
         let startObj = {},
             endObj = {},
+            resultObj = {},
             mockObj = {};
         if (this.objectForTest.__proto__.hasOwnProperty('addListOfWords')) {
             for (let item of this.objectForTest.data.items) {
@@ -167,10 +168,16 @@ class Test {
                 endObj[item] = num1 + num2
                 //console.log(item,startObj[item],mockObj[item])
             }
-            console.log(startObj, mockObj, endObj)
-            //if (this.objectForTest.__proto__.addWord.call(mockInfo.version) === mockInfo.version) {
+            //let resultObj1 = this.objectForTest.__proto__.addListOfWords.call(this.objectForTest, mockListOfWords)
+            //console.log(resultObj1)
+            for (let item of this.objectForTest.__proto__.addListOfWords.call(this.objectForTest, mockListOfWords).data.items) {
+                resultObj = {[item.language]: item.words.length}
+            }
+            console.log(startObj, mockObj, endObj, resultObj)
+            console.log(Object.keys(endObj).length, Object.keys(resultObj).length)
+            if (Object.keys(endObj) === Object.keys(resultObj)) {
                 flag = true
-            //}
+            }
         }
         console.log(`Check for addList of words method ${flag}`);
     }
@@ -354,8 +361,8 @@ class Schedule {
         this.upVersion()
         return success[0].words[success[0].words.length - 1]
     }
-    addListOfWords () {
-
+    addListOfWords (listsOfWords) {
+        return this
     }
 }
 
