@@ -73,6 +73,15 @@ class Test {
                     voice: '',
                     nextRepetition: 0,
                     currentStage: 'start'
+                }, {
+                    word: 'le lapin noir',
+                    translate: 'черный кролик',
+                    transcription: '',
+                    language: 'france',
+                    image: '',
+                    voice: '',
+                    nextRepetition: 0,
+                    currentStage: 'start'
                 }],
             version: new Date()
         }
@@ -86,6 +95,7 @@ class Test {
             nextRepetition: 0,
             currentStage: 'start'
         }
+        console.log(this.objectForTest)
         // *********  check object ***********
         let flag = false
         if (typeof (this.objectForTest) === 'object') {
@@ -113,7 +123,7 @@ class Test {
                 flag = true
                 for (let item1 of wordProperty) {
                     if (!this.objectForTest.data.items[0].words[0].hasOwnProperty(item1)) {
-                        console.log(item1)
+                        console.log('property not found', item1)
                         flag = false
                     }
                 }
@@ -122,7 +132,6 @@ class Test {
         console.log(`Check property of word ${flag}`);
         flag = false
         // *********  check object methods  ***********
-        console.log(this.objectForTest)
         if (this.objectForTest.__proto__.hasOwnProperty('upVersion')) {
             if (this.objectForTest.__proto__.upVersion.call(this.objectForTest) === Date.now()) {
                 //console.log(this.objectForTest.data.version, Date.now())
@@ -140,7 +149,25 @@ class Test {
         }
         console.log(`Check for addWord method ${flag}`);
         flag = false
+        let startObj = {},
+            endObj = {},
+            mockObj = {};
         if (this.objectForTest.__proto__.hasOwnProperty('addListOfWords')) {
+            for (let item of this.objectForTest.data.items) {
+                startObj = {[item.language]: item.words.length}
+            }
+            for (let item of mockListOfWords.items) {
+                let temp = !mockObj[item.language]?0:mockObj[item.language]
+                mockObj[item.language] = ++temp
+            }
+            let setOfKeysObjects = [... new Set(Object.keys(startObj).concat(Object.keys(mockObj)))]
+            for (let item of setOfKeysObjects) {
+                let num1 = !startObj[item]?0:startObj[item],
+                    num2 = !mockObj[item]?0:mockObj[item]
+                endObj[item] = num1 + num2
+                //console.log(item,startObj[item],mockObj[item])
+            }
+            console.log(startObj, mockObj, endObj)
             //if (this.objectForTest.__proto__.addWord.call(mockInfo.version) === mockInfo.version) {
                 flag = true
             //}
