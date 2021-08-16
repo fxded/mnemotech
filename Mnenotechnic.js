@@ -45,30 +45,24 @@ class Test {
                         'day25',
                         'month4',
                         'year2']
-        let wordProperty = [
-            'word',
-            'translate',
-            'transcription',
-            'image',
-            'voice',
-            'nextRepetition',
-            'currentStage'
-        ]
         let mockListOfWords = {
             items: [{
-                    word: 'mock',
-                    translate: 'издеваться, глумиться, дразнить',
+                language: 'germany',
+                words: [{
+                    word: 'ein Hund',
+                    translate: 'собака',
                     transcription: '',
-                    language: 'english',
                     image: '',
                     voice: '',
                     nextRepetition: 0,
                     currentStage: 'start'
-                }, {
+                }]
+            }, {
+                language: 'france',
+                words: [{
                     word: 'le lapin rouge',
                     translate: 'красный кролик',
                     transcription: '',
-                    language: 'france',
                     image: '',
                     voice: '',
                     nextRepetition: 0,
@@ -82,18 +76,9 @@ class Test {
                     voice: '',
                     nextRepetition: 0,
                     currentStage: 'start'
-                }],
+                }]
+            }],
             version: new Date()
-        }
-        let mockWord = {
-            word: 'le lapin rouge',
-            translate: 'красный кролик',
-            transcription: '',
-            language: 'france',
-            image: '',
-            voice: '',
-            nextRepetition: 0,
-            currentStage: 'start'
         }
         console.log(this.objectForTest)
         // *********  check object ***********
@@ -121,7 +106,7 @@ class Test {
                 &&  this.objectForTest.data.hasOwnProperty('version')
                 &&  this.objectForTest.data.items[0].hasOwnProperty('words')) {
                 flag = true
-                for (let item1 of wordProperty) {
+                for (let item1 in mockListOfWords.items[0].words[0]) {
                     if (!this.objectForTest.data.items[0].words[0].hasOwnProperty(item1)) {
                         console.log('property not found', item1)
                         flag = false
@@ -142,8 +127,12 @@ class Test {
         flag = false
         if (this.objectForTest.__proto__.hasOwnProperty('addWord')) {
             //console.log('check metods',this.objectForTest.__proto__.addWord.call(this.objectForTest, mockListOfWords.items[1]))
-            if (this.objectForTest.__proto__.addWord.call(this.objectForTest, mockListOfWords.items[0]).word === mockListOfWords.items[0].word) {
-                //console.log('test',this.objectForTest.__proto__.addWord.call(this.objectForTest, mockWord))
+            if (this.objectForTest.__proto__.addWord.call(
+                    this.objectForTest,
+                    {   ...mockListOfWords.items[0].words[0],
+                        language: mockListOfWords.items[0].language
+                    }
+                ).word === mockListOfWords.items[0].words[0].word) {
                 flag = true
             }
         }
@@ -155,11 +144,12 @@ class Test {
             mockObj = {};
         if (this.objectForTest.__proto__.hasOwnProperty('addListOfWords')) {
             for (let item of this.objectForTest.data.items) {
-                startObj = {[item.language]: item.words.length}
+                startObj[item.language] = item.words.length
             }
             for (let item of mockListOfWords.items) {
-                let temp = !mockObj[item.language]?0:mockObj[item.language]
-                mockObj[item.language] = ++temp
+                //let temp = !mockObj[item.language]?0:mockObj[item.language]
+                //mockObj[item.language] = ++temp
+                mockObj[item.language] = item.words.length
             }
             let setOfKeysObjects = [... new Set(Object.keys(startObj).concat(Object.keys(mockObj)))]
             for (let item of setOfKeysObjects) {
@@ -171,12 +161,18 @@ class Test {
             //let resultObj1 = this.objectForTest.__proto__.addListOfWords.call(this.objectForTest, mockListOfWords)
             //console.log(resultObj1)
             for (let item of this.objectForTest.__proto__.addListOfWords.call(this.objectForTest, mockListOfWords).data.items) {
-                resultObj = {[item.language]: item.words.length}
+                resultObj[item.language] = item.words.length
             }
-            console.log(startObj, mockObj, endObj, resultObj)
-            console.log(Object.keys(endObj).length, Object.keys(resultObj).length)
-            if (Object.keys(endObj) === Object.keys(resultObj)) {
+            //console.log(startObj, mockObj, endObj, resultObj)
+            //console.log(Object.keys(endObj).length, Object.keys(resultObj).length)
+            if (Object.keys(endObj).length === Object.keys(resultObj).length) {
                 flag = true
+                for (let key of Object.keys(endObj)) {
+                    //console.log(resultObj[key],key,endObj[key])
+                    if (resultObj[key] != endObj[key]) {
+                        flag = false
+                    }
+                }
             }
         }
         console.log(`Check for addList of words method ${flag}`);
@@ -324,6 +320,7 @@ class Schedule {
     }
     addWord (wordToAdd) {
         let success;
+        //console.log(wordToAdd)
         // если язык такой уже ест то добаляем слово
         success = this.data.items.filter(item => {
             if (item.language === wordToAdd.language) {
@@ -362,6 +359,13 @@ class Schedule {
         return success[0].words[success[0].words.length - 1]
     }
     addListOfWords (listsOfWords) {
+        for (let item of listsOfWords.items) {
+            //console.log('++++', item.language)
+            for (let word of item.words) {
+                //console.log('----', {...word, language: item.language})
+                this.addWord({...word, language: item.language})
+            }
+        }
         return this
     }
 }
@@ -436,8 +440,8 @@ let test5 = {
 let schedule = new Schedule (listsOfWords)
 let test1 = new Test(schedule)
 test1.test();
-schedule.addWord(test)
+/*schedule.addWord(test)
 schedule.addWord(test2)
 schedule.addWord(test3)
 schedule.addWord(test4)
-schedule.addWord(test5)
+schedule.addWord(test5)*/
