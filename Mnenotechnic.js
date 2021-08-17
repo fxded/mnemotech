@@ -26,8 +26,76 @@ class MyClass {
   // ...
 }
  */
-
 class Test {
+    /**
+     * тестирование объeкта слована наличие необходимых свойств, 
+     * методов и результатов работы методов
+     */
+    constructor (objectForTest) {
+        this.objectForTest = objectForTest;
+    }
+    /**
+     * 
+     * @param {*} list of property 
+     * @param {*} list of methods 
+     * @returns boolean
+     */
+    test (property=[],methods=[]) {
+        for (let item of property) {
+            if (!this.testPropertiesAvailable(item)) {
+                /*console.log(`Check '${
+                    item}' property of '${
+                    this.objectForTest.constructor.name}' is ${
+                    this.testPropertiesAvailable(item)
+                }`)*/
+                return {    message:    `Check '${
+                                            item}' property of '${
+                                            this.objectForTest.constructor.name}' is ${
+                                            this.testPropertiesAvailable(item)
+                                        }`, 
+                            result:     false 
+                }
+            }
+        }
+        for (let item of methods) {
+            if (!this.testMethodsAvailable(item)) {
+                /*console.log(`Check '${
+                    item}' method of '${
+                    this.objectForTest.constructor.name}' is ${
+                    this.testMethodsAvailable(item)
+                }`)*/
+                return {    message:    `Check '${
+                                            item}' method of '${
+                                            this.objectForTest.constructor.name}' is ${
+                                            this.testMethodsAvailable(item)
+                                        }`, 
+                            result:     false 
+                }
+}
+        }
+        //console.log(`Check '${this.objectForTest.constructor.name}' is OK`)
+        return {    message: `Check '${this.objectForTest.constructor.name}' is OK`, 
+                    result: true }
+    }
+    testPropertiesAvailable (property) {
+        return this.objectForTest.hasOwnProperty(property)
+    }
+    testMethodsAvailable (method) {
+        return this.objectForTest.__proto__.hasOwnProperty(method)
+    }
+    testMethodsResults (context, method) {
+        return this.objectForTest.__proto__[method].call(this.objectForTest,context)
+    }
+}
+
+class TestSchedule {
+    /**
+     * 
+     * @param {*} objectForTest 
+     * 
+     * тестирование объекта словаря на наличие необходимых свойств, 
+     * методов и результатов работы методов
+     */
     constructor (objectForTest) {
         this.objectForTest = objectForTest;
     }
@@ -45,6 +113,7 @@ class Test {
                         'day25',
                         'month4',
                         'year2']
+        // тестовый список
         let mockListOfWords = {
             items: [{
                 language: 'germany',
@@ -117,6 +186,7 @@ class Test {
         console.log(`Check property of word ${flag}`);
         flag = false
         // *********  check object methods  ***********
+        // проверяем обновляет ли метод версию словаря
         if (this.objectForTest.__proto__.hasOwnProperty('upVersion')) {
             if (this.objectForTest.__proto__.upVersion.call(this.objectForTest) === Date.now()) {
                 //console.log(this.objectForTest.data.version, Date.now())
@@ -125,6 +195,7 @@ class Test {
         }
         console.log(`Check method increment version ${flag}`);
         flag = false
+        // проверяем добавляет ли метод новое слово в словарь (метод возвращает добавленное слово)
         if (this.objectForTest.__proto__.hasOwnProperty('addWord')) {
             //console.log('check metods',this.objectForTest.__proto__.addWord.call(this.objectForTest, mockListOfWords.items[1]))
             if (this.objectForTest.__proto__.addWord.call(
@@ -138,6 +209,10 @@ class Test {
         }
         console.log(`Check for addWord method ${flag}`);
         flag = false
+        // проверяем работу метода по добавленю списка слов, метод возращает результирующий
+        // список с добавленными словами. Для проверки считаем сколько было до добавления слов в 
+        // каждом языке, считаем сколько слов в добаляемом списке, складываем и сравниваем с
+        // результирующим списком
         let startObj = {},
             endObj = {},
             resultObj = {},
@@ -151,6 +226,7 @@ class Test {
                 //mockObj[item.language] = ++temp
                 mockObj[item.language] = item.words.length
             }
+            // вычисляем множество уникальных языков исходного объекта и добавляемого списка
             let setOfKeysObjects = [... new Set(Object.keys(startObj).concat(Object.keys(mockObj)))]
             for (let item of setOfKeysObjects) {
                 let num1 = !startObj[item]?0:startObj[item],
@@ -438,10 +514,14 @@ let test5 = {
 }
 //console.log(listsOfWords)
 let schedule = new Schedule (listsOfWords)
-let test1 = new Test(schedule)
+let test1 = new TestSchedule(schedule)
 test1.test();
-/*schedule.addWord(test)
+schedule.addWord(test)
 schedule.addWord(test2)
 schedule.addWord(test3)
 schedule.addWord(test4)
-schedule.addWord(test5)*/
+schedule.addWord(test5)
+let testClass = new Test(listsOfWords)
+//testClass.test(['word', 'translate', 'transcription', 'language', 'image', 'voice', 'nextRepetition', 'currentStage'],['test'])
+console.log(testClass.test(['items1', 'version']))
+console.log(testClass.test())
