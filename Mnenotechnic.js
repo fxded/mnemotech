@@ -14,6 +14,30 @@
 */
 
 /**
+ * 1.TODO Test проверяет объект слово на свойства и манипуляции со словом
+ * а это инициализация, смена перевода, смена(транскипции, картинки, звука, следующего повторения, текущей стадии изучения)
+ * получение (перевода и всех остальных свойств)
+ * 
+ * 2.TODO наследовать от Test класс который проверяет список слов и манипуляции со списком
+ * а это добавление нового слова , нового языка, получение слова(по определенным критериям)
+ * и списка слов определенного языка
+ * 
+ * 3.TODO возможно при первом обращении к списку построить индексированное дерево(по какому либо параметру(например по 
+ * времени следующего повторения)) для более быстрого доступа
+ * 
+ * 4.TODO пользователь может выбрать повторение на одном двух и т.д. или всех языках, время показа, количество слов для показа 
+ * в данный подход
+ * 
+ * 5.TODO авторизация jwt(openAO) c почтой с выгрузкой и загрузкой словаря
+ * 
+ * 6.TODO реализовать на nodejs, socketio, mongodb, dockerio
+ * 
+ * 7.TODO разместить на heroku.com
+ * 
+ * 8.TODO помнитьвсе.колок.рус
+ */
+
+/**
 class MyClass {
   prop = value; // свойство
   constructor(...) { // конструктор
@@ -28,7 +52,7 @@ class MyClass {
  */
 class Test {
     /**
-     * тестирование объeкта слована наличие необходимых свойств, 
+     * тестирование объeкта слова на наличие необходимых свойств, 
      * методов и результатов работы методов
      */
     constructor (objectForTest) {
@@ -88,6 +112,14 @@ class Test {
     }
 }
 
+class Word {
+/**
+ * основной класс объекта Слово
+ */
+    constructor (word) {
+        Object.assign(this, word);
+    }
+}
 class TestSchedule {
     /**
      * 
@@ -445,7 +477,7 @@ class Schedule {
         return this
     }
 }
-
+/*
 var listsOfWords = {
     items: [
         {   language: 'english',
@@ -525,3 +557,18 @@ let testClass = new Test(listsOfWords)
 //testClass.test(['word', 'translate', 'transcription', 'language', 'image', 'voice', 'nextRepetition', 'currentStage'],['test'])
 console.log(testClass.test(['items1', 'version']))
 console.log(testClass.test())
+*/
+let word = {
+    word: 'le lapin',
+    translate: 'кролик',
+    transcription: '',
+    language: 'france',
+    image: '',
+    voice: '',
+    nextRepetition: 0,
+    currentStage: 'start'
+}
+let objWord = new Word(word)
+let testClass = new Test(objWord)
+console.log(objWord)
+console.log(testClass.test(['word', 'translate', 'transcription', 'language', 'image', 'voice', 'nextRepetition', 'currentStage'],['constructor']))
