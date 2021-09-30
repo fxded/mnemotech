@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const { dbURI, dbOptions } = require('./db');
 const os = require('os');
 const port = process.env.PORT || 3010;
 const authRoutes = require('./routes/authRoutes');
@@ -22,15 +23,11 @@ app.use(fileUpload());
 // view engine
 app.set('view engine', 'ejs');
 
-// database connection
-const dbURI = 'mongodb+srv://jwtnodeuser:48FPKq8fUiF2brtl@cluster0.wz4dw.mongodb.net/jwtdb';
-mongoose.connect(dbURI, { 
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex:true,
-    useFindAndModify: false
-  })
-  .then((result) => app.listen(3010))
+// database connection and start app
+mongoose.connect(dbURI, dbOptions)
+  .then((result) => {
+        console.log('MongoDB is connected');
+        app.listen(port)})
   .then(() => {
         let userName = os.userInfo().username;
         console.log(`Hi ${userName}! 

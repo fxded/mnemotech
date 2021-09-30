@@ -1,7 +1,7 @@
 {
-  "name": "jwtmongo.ru",
+  "name": "mnemotech.ru",
   "version": "1.0.0",
-  "description": "explore how use jwt on nodejs",
+  "description": "an application for easy memorization",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,20 +9,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/fxded/jwtmongo.ru.git"
+    "url": "git+ssh://github.com/fxded/mnemotech.git"
   },
   "keywords": [
-    "jwt",
+    "memory",
     "mongo",
-    "ejs",
-    "route"
+    "docker",
+    "docker-compose"
   ],
   "author": "Votintseff Vasiliy",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/fxded/jwtmongo.ru/issues"
+    "url": "https://github.com/fxded/mnemotech/issues"
   },
-  "homepage": "https://github.com/fxded/jwtmongo.ru#readme",
+  "homepage": "https://github.com/fxded/mnemotech#readme",
   "dependencies": {
     "bcrypt": "^5.0.0",
     "cookie-parser": "^1.4.5",
