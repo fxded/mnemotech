@@ -20,10 +20,11 @@ services:
     volumes:
       - .:/home/node/app
       - node_modules:/home/node/app/node_modules
+      - userdata:/home/node/app/userdata
     networks:
       - app-network
-    command: ./wait-for.sh db:27017 -- /home/node/app/node_modules/.bin/nodemon app.js
-#    command: /home/node/app/node_modules/.bin/nodemon app.js
+#    command: ./wait-for.sh db:27017 -- /home/node/app/node_modules/.bin/nodemon app.js
+    command: /home/node/app/node_modules/.bin/nodemon app.js
   db:
     image: mongo:4.4.9-focal
     container_name: db
@@ -43,3 +44,4 @@ networks:
 volumes:
   dbdata:
   node_modules:
+  userdata:
